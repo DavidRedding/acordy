@@ -58,7 +58,7 @@
         padding: 0 15px;
         color: #b0b7c3;
         /* background: #2b2f38; */
-        transition: max-height 0.3s ease, overflow 0.3s ease;
+        transition: max-height 0.4s ease-in-out, overflow 0.4s ease-in-out; /* Increase duration and use ease-in-out */
         will-change: max-height, overflow;
       }
       .accordion-content h3 {
@@ -104,6 +104,11 @@
         object-fit: cover;
         border-radius: 10px;
         cursor: pointer;
+      }
+
+      .media-container {
+        max-height: 700px;
+        overflow: hidden;
       }
 
       .media-container.go-left {
@@ -179,6 +184,10 @@
 
         .container {
           max-width: 768px;
+        }
+
+        .media-container {
+          max-height: 452px;
         }
       }
 
