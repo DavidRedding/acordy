@@ -8,31 +8,31 @@ document.addEventListener('DOMContentLoaded', () => {
   // Media mappings with arrays of images
   const mediaMap = {
     1: [
-      { img: 'https://placehold.co/295x402/7F1BF5/FFF/png', video: 'https://www.youtube.com/embed/6Wo4AhCdt84?si=Bzt8_BGy1Vzryvcu' },
-      { img: 'https://placehold.co/295x402/7F1BF5/FFF/png', video: 'https://www.youtube.com/embed/z-JHBUPL3fc?si=5cYBGwskWR6oDXBX' },
-      { img: 'https://placehold.co/295x402/7F1BF5/FFF/png', video: 'https://www.youtube.com/embed/EoazTVaJWyw?si=SqQ0khTu1jsGEobk' },
+      { img: 'https://digitalasset.intuit.com/render/content/dam/intuit/pcg/en_us/Tax2024/photo/reputation-images/Innovation_Kristin.png', video: 'https://www.youtube.com/embed/cRwNQOCMKsQ?si=9UoS_uzOWRJYr4Pj' }, //innovate - flush
+      { img: 'https://digitalasset.intuit.com/render/content/dam/intuit/pcg/en_us/Tax2024/photo/reputation-images/Innovation_Eric.png', video: 'https://www.youtube.com/embed/iH1NyCcreFs?si=5YvFWaZijXDQGwmv' }, //innovate - top
+      { img: 'https://digitalasset.intuit.com/render/content/dam/intuit/pcg/en_us/Tax2024/photo/reputation-images/Innovation_Gordon.png', video: 'https://www.youtube.com/embed/Rm5iCEz16jo?si=bYl9QEM6ep0MIUqv' }, //innovate - btm
     ],
 
     2: [
-      { img: 'https://placehold.co/295x402/0D3C9A/FFF/png', video: 'https://www.youtube.com/embed/NsxkpAgJx0o?si=FEfS6oEbOq_WLkih' },
-      { img: 'https://placehold.co/295x402/0D3C9A/FFF/png', video: 'https://www.youtube.com/embed/RPPaoz2A5RM?si=FnARlzjmTfDNA5ep' },
-      { img: 'https://placehold.co/295x402/0D3C9A/FFF/png', video: 'https://www.youtube.com/embed/NsxkpAgJx0o?si=FEfS6oEbOq_WLkih' },
+      { img: 'https://digitalasset.intuit.com/render/content/dam/intuit/pcg/en_us/Tax2024/photo/reputation-images/Technology_Eric.png', video: 'https://www.youtube.com/embed/E6W1vukdVSk?si=P4-YA_AdemgocjX5' }, //tech - flush
+      { img: 'https://digitalasset.intuit.com/render/content/dam/intuit/pcg/en_us/Tax2024/photo/reputation-images/Growth_Tim.png', video: 'https://www.youtube.com/embed/MvJQEaoro6U?si=ZpSUx0Yak-glCQn5' }, //tech - top
+      { img: 'https://digitalasset.intuit.com/render/content/dam/intuit/pcg/en_us/Tax2024/photo/reputation-images/Technology_Chassity.png', video: 'https://www.youtube.com/embed/6pnsLrktob4?si=FM3LHfjvSZKBQwFU' }, //tech - btm
     ],
 
     3: [
-      { img: 'https://placehold.co/295x402/464EC2/FFF/png', video: 'https://www.youtube.com/embed/NsxkpAgJx0o?si=FEfS6oEbOq_WLkih' },
-      { img: 'https://placehold.co/295x402/464EC2/FFF/png', video: 'https://www.youtube.com/embed/RPPaoz2A5RM?si=FnARlzjmTfDNA5ep' },
-      { img: 'https://placehold.co/295x402/464EC2/FFF/png', video: 'https://www.youtube.com/embed/3ZSDk1Wm6eE?si=huT8iigAgsz_MtBj' },
+      { img: 'https://digitalasset.intuit.com/render/content/dam/intuit/pcg/en_us/Tax2024/photo/reputation-images/Training_Gordon.png', video: 'https://www.youtube.com/embed/UGM2coPHSeE?si=8Y5205SkygLaKqqh' }, //train - flush
+      { img: 'https://digitalasset.intuit.com/render/content/dam/intuit/pcg/en_us/Tax2024/photo/reputation-images/Training_Christina.png', video: 'https://www.youtube.com/embed/A6Y7gc6Be3Q?si=GYntzVpOOuYyY_07' }, //train - top
+      { img: 'https://digitalasset.intuit.com/render/content/dam/intuit/pcg/en_us/Tax2024/photo/reputation-images/Training_Chassity.png', video: 'https://www.youtube.com/embed/6IXTNE4LIOg?si=CSLGsMFSMi5y8DqZ' }, //train - btm
     ],
     4: [
-      { img: 'https://placehold.co/295x402/7E41E2/FFF/png', video: 'https://www.youtube.com/embed/6Gjo3vaVQcQ?si=Obzjx626s2mSTC5e' },
-      { img: 'https://placehold.co/295x402/7E41E2/FFF/png', video: 'https://www.youtube.com/embed/z-JHBUPL3fc?si=5cYBGwskWR6oDXBX' },
-      { img: 'https://placehold.co/295x402/7E41E2/FFF/png', video: 'https://www.youtube.com/embed/V80rrtigmu0?si=zlxdS__Iha6u_s1N' },
+      { img: 'https://digitalasset.intuit.com/render/content/dam/intuit/pcg/en_us/Tax2024/photo/reputation-images/Community_Chassity.png', video: 'https://www.youtube.com/embed/Kq88kUyH5Zw?si=ncx1KdtSRM-6Iwrs' }, //comm - flush
+      { img: 'https://digitalasset.intuit.com/render/content/dam/intuit/pcg/en_us/Tax2024/photo/reputation-images/Community_Michelle.png', video: 'https://www.youtube.com/embed/BKzMhE38TM4?si=8cFfg5hBMMAC7Jdu' }, //comm - top
+      { img: 'https://digitalasset.intuit.com/render/content/dam/intuit/pcg/en_us/Tax2024/photo/reputation-images/Community_Christina.png', video: 'https://www.youtube.com/embed/6Wo4AhCdt84?si=Bzt8_BGy1Vzryvcu' }, //comm - btm
     ],
     5: [
-      { img: 'https://placehold.co/295x402/4164dc/FFF/png', video: 'https://www.youtube.com/embed/NsxkpAgJx0o?si=FEfS6oEbOq_WLkih' },
-      { img: 'https://placehold.co/295x402/4164dc/FFF/png', video: 'https://www.youtube.com/embed/RPPaoz2A5RM?si=FnARlzjmTfDNA5ep' },
-      { img: 'https://placehold.co/295x402/4164dc/FFF/png', video: 'https://www.youtube.com/embed/3ZSDk1Wm6eE?si=huT8iigAgsz_MtBj' },
+      { img: 'https://digitalasset.intuit.com/render/content/dam/intuit/pcg/en_us/Tax2024/photo/reputation-images/Growth_Eric.png', video: 'https://www.youtube.com/embed/Z7GswB6lBWI?si=4J3O50v1aIO6FCGl' }, //growth - flush
+      { img: 'https://digitalasset.intuit.com/render/content/dam/intuit/pcg/en_us/Tax2024/photo/reputation-images/Growth_Tim.png', video: 'https://www.youtube.com/embed/4Yz-W2lllbc?si=W7z6EpLbi_gdY3fjU' }, //growth - top
+      { img: 'https://digitalasset.intuit.com/render/content/dam/intuit/pcg/en_us/Tax2024/photo/reputation-images/Growth_Chassity.png', video: 'https://www.youtube.com/embed/2dZmTOltuFE?si=xNlXfR_Xi7zsMVhC' }, //growth - btm
     ],
   };
 
@@ -114,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
       mediaItem.classList.add('media-item');
       mediaItem.setAttribute('data-video-url', video); // Store video URL
       mediaContainer.appendChild(mediaItem);
+      // add tracking here data wa
     });
 
     // Attach click event listeners to media items

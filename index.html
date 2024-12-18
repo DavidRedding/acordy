@@ -107,7 +107,7 @@
       }
 
       .media-container {
-        max-height: 700px;
+        max-height: 830px;
         overflow: hidden;
       }
 
@@ -164,6 +164,13 @@
         align-self: center;
       }
 
+      .media-container .media-item {
+        transition: filter 0.3s ease, box-shadow 0.3s ease;
+      }
+      .media-container .media-item:hover {
+        filter: brightness(1.2);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
       /* Mobile-specific styles */
       @media screen and (min-width: 768px) and (max-width: 1023px) {
         .accordion h2 {
@@ -187,7 +194,7 @@
         }
 
         .media-container {
-          max-height: 452px;
+          max-height: 613px;
         }
       }
 
