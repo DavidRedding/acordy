@@ -106,14 +106,47 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Add new media items
-    mediaArray.forEach(({ img, video }) => {
+    mediaArray.forEach(({ img, video, name, title }) => {
       const mediaItem = document.createElement('div');
       mediaItem.style.backgroundImage = `url(${img})`;
-      mediaItem.alt = 'Medias';
       mediaItem.classList.add('media-item');
       mediaItem.setAttribute('data-video-url', video); // Store video URL
+
+      // Create item content
+      const itemContent = document.createElement('div');
+      itemContent.classList.add('item-content');
+
+      // Create name and title elements
+      const nameDiv = document.createElement('div');
+      nameDiv.classList.add('name');
+      const nameH5 = document.createElement('h5');
+      nameH5.innerHTML = name;
+      const titleH6 = document.createElement('h6');
+      titleH6.innerHTML = title;
+      nameDiv.appendChild(nameH5);
+      nameDiv.appendChild(titleH6);
+
+      // Create play button
+      const playDiv = document.createElement('div');
+      playDiv.classList.add('play');
+      playDiv.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="33" height="32" viewBox="0 0 33 32" fill="none">
+        <path d="M15.8218 29.0793C23.5038 29.0793 29.7311 22.8519 29.7311 15.17C29.7311 7.48814 23.5038 1.26074 15.8218 1.26074C8.13999 1.26074 1.9126 7.48814 1.9126 15.17C1.9126 22.8519 8.13999 29.0793 15.8218 29.0793Z" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M12.9715 10.2672C12.861 10.1876 12.7293 10.1426 12.5932 10.1379C12.457 10.1331 12.3226 10.1689 12.2068 10.2407C12.091 10.3124 11.9991 10.4169 11.9428 10.5409C11.8864 10.6649 11.8681 10.8029 11.8902 10.9373V19.4037C11.8684 19.5381 11.8869 19.6759 11.9434 19.7996C11.9999 19.9235 12.0918 20.0277 12.2075 20.0993C12.3232 20.1709 12.4576 20.2066 12.5936 20.2018C12.7295 20.1971 12.8611 20.1521 12.9715 20.0726L21.6945 15.7111C22.2884 15.4136 22.2884 14.9274 21.6945 14.6298L12.9715 10.2672Z" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    `;
+
+      // add tracking here data-wa-link
+
+      // Append name, title, and play button to item content
+      itemContent.appendChild(nameDiv);
+      itemContent.appendChild(playDiv);
+
+      // Append item content to media item
+      mediaItem.appendChild(itemContent);
+
+      // Append media item to media container
       mediaContainer.appendChild(mediaItem);
-      // add tracking here data wa
     });
 
     // Attach click event listeners to media items

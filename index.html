@@ -175,6 +175,41 @@
         filter: brightness(1.2);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       }
+      .media-item {
+        position: relative;
+      }
+      .item-content {
+        display: flex;
+        align-items: center;
+        width: 93%;
+        justify-content: space-between;
+        margin-bottom: 16px;
+
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .item-content h5 {
+        margin: 0;
+        font-size: 25px;
+        color: #f4f4ef;
+        font-size: 25.242px;
+        font-weight: 500;
+        line-height: 120%;
+        letter-spacing: -1.01px;
+      }
+
+      .item-content h6 {
+        margin: 0;
+        color: #f4f4ef;
+        font-size: 11.219px;
+        font-weight: 400;
+        line-height: 120%;
+        letter-spacing: -0.449px;
+        text-align: left;
+      }
       /* Mobile-specific styles */
       @media screen and (min-width: 768px) and (max-width: 1023px) {
         .accordion h2 {
