@@ -84,15 +84,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateMedia(mediaArray) {
     // Save references to the gradient elements
-    const topGradient = document.querySelector('.top-gradient');
-    const btmGradient = document.querySelector('.btm-gradient');
+    let topGradient = document.querySelector('.top-gradient');
+    let btmGradient = document.querySelector('.btm-gradient');
 
     // Clear previous media
     mediaContainer.innerHTML = '';
 
     // Append the gradient elements back to the container
-    mediaContainer.appendChild(topGradient);
-    mediaContainer.appendChild(btmGradient);
+    if (topGradient && btmGradient) {
+      console.log('appending gradients');
+      mediaContainer.appendChild(topGradient);
+      mediaContainer.appendChild(btmGradient);
+    } else {
+      topGradient = document.createElement('div');
+      topGradient.classList.add('top-gradient');
+
+      btmGradient = document.createElement('div');
+      btmGradient.classList.add('btm-gradient');
+
+      mediaContainer.appendChild(topGradient);
+      mediaContainer.appendChild(btmGradient);
+    }
 
     // Add new media items
     mediaArray.forEach(({ img, video }) => {
