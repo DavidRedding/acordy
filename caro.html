@@ -1,0 +1,569 @@
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    background: #181c1f;
+  }
+
+  @keyframes slide {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+
+  .carousel-container {
+    overflow: hidden;
+    padding: 0;
+    background: #181c1f;
+    white-space: nowrap;
+    position: relative;
+
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  .carousel-container:before,
+  .carousel-container:after {
+    position: absolute;
+    top: 0;
+    width: 250px;
+    height: 100%;
+    content: '';
+    z-index: 2;
+
+    pointer-events: none;
+  }
+
+  .carousel-container:before {
+    left: 0;
+    background: linear-gradient(to left, rgba(24, 28, 31, 0), #181c1f);
+  }
+
+  .carousel-container:after {
+    right: 0;
+    background: linear-gradient(to right, rgba(24, 28, 31, 0), #181c1f);
+  }
+
+  .carousel-container:hover .carousel-items-slide {
+    /* animation-play-state: paused; */
+  }
+
+  .carousel-items-slide {
+    display: inline-block;
+    /* animation: 30s slide infinite linear; */
+  }
+
+  .carousel-item {
+    display: inline-block; /* Makes divs behave like inline elements */
+    margin: 0 7px; /* Match the img margin */
+    background-size: contain; /* Ensures the image fits within the div */
+    background-repeat: no-repeat; /* Avoids tiling */
+    background-position: center;
+    cursor: pointer;
+    height: 366px;
+    width: 240px;
+    border-radius: 20px;
+    position: relative;
+
+    transition: filter 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .carousel-item:hover {
+    filter: brightness(1.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  /* .carousel-item:hover {
+    filter: brightness(0.8);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  } */
+
+  .item-content {
+    display: flex;
+    align-items: center;
+    width: 93%;
+    justify-content: space-between;
+    margin-bottom: 16px;
+
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .item-content h5 {
+    margin: 0;
+    font-size: 25px;
+    color: #f4f4ef;
+    font-size: 25.242px;
+    font-weight: 500;
+    line-height: 120%; /* 30.29px */
+    letter-spacing: -1.01px;
+  }
+
+  .item-content h6 {
+    margin: 0;
+    color: #f4f4ef;
+    font-size: 11.219px;
+    font-weight: 400;
+    line-height: 120%;
+    letter-spacing: -0.449px;
+    text-align: left;
+  }
+
+  /* New Styles for Navigation Arrows */
+  .carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 7%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    opacity: 0%;
+  }
+
+  .carousel-arrow.left {
+    left: 10px;
+  }
+
+  .carousel-arrow.right {
+    right: 10px;
+  }
+
+  .carousel-arrow:hover {
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  /* Basic styling for button */
+  #showVideoButton {
+    font-size: 16px;
+    cursor: pointer;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  #showVideoButton #btn-container {
+    display: flex;
+    justify-content: center;
+    color: #055393;
+    gap: 8px;
+  }
+
+  #showVideoButton #btn-container #btn-text_container {
+    display: flex;
+    font-weight: 500;
+  }
+
+  #btn-text_container #video-length {
+    color: #6b6c72;
+    font-weight: 400;
+  }
+
+  #btn-text_container > div {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  #video-text:hover {
+    text-decoration: underline;
+  }
+
+  /* Modal overlay */
+  #videoModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  /* Video container */
+  #videoContainer {
+    position: relative;
+    width: 560px;
+    height: 315px;
+  }
+
+  /* Close button */
+  #closeModal {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+  }
+
+  /* Centering iframe in the modal */
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  @media (max-width: 768px) {
+    .carousel-container {
+      overflow-x: auto; /* Enable horizontal scrolling */
+      scroll-snap-type: x mandatory; /* Enable snap scrolling */
+      -webkit-overflow-scrolling: touch; /* Smooth iOS scroll */
+      scroll-behavior: smooth; /* Smooth scroll */
+      position: relative; /* Retain positioning */
+    }
+
+    .carousel-container::-webkit-scrollbar,
+    .carousel-items-wrapper::-webkit-scrollbar {
+      display: none; /* Hide scrollbar for Chrome, Safari, Edge */
+    }
+    .carousel-items-wrapper {
+      display: flex;
+      gap: 10px; /* Spacing between items */
+      scroll-snap-type: x mandatory; /* Ensure snapping */
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
+      scroll-behavior: smooth; /* Smooth scroll behavior */
+      transform: none !important;
+    }
+
+    .carousel-items-slide {
+      display: flex; /* Horizontal layout for items */
+      gap: 2vw;
+    }
+
+    .carousel-item {
+      flex: 0 0 auto; /* Prevent shrinking */
+      scroll-snap-align: center; /* Snap items to center */
+      width: 240px; /* Adjust width for smaller screens */
+      height: 366px; /* Reduce height for mobile */
+      margin: 0 auto; /* Center alignment */
+      border-radius: 20px; /* Smooth corners */
+      background-size: cover; /* Cover image */
+      background-position: center;
+      box-shadow: none; /* Optional: Remove shadow */
+
+      font-size: 18px;
+      text-align: center;
+      /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); */
+    }
+
+    /* Hide arrows on mobile */
+    .carousel-arrow {
+      display: none;
+    }
+
+    /* Optional: Remove gradients */
+    .carousel-container:before,
+    .carousel-container:after {
+      display: none;
+    }
+  }
+</style>
+
+<div class="carousel-container">
+  <!-- Arrows for Manual Control -->
+  <button class="carousel-arrow left" id="arrowLeft">‹</button>
+  <button class="carousel-arrow right" id="arrowRight">›</button>
+
+  <div class="carousel-items-wrapper">
+    <div class="carousel-items-slide">
+      <!-- Erik -->
+      <div class="carousel-item" data-video-url="https://www.youtube.com/embed/6Gjo3vaVQcQ?si=Obzjx626s2mSTC5e" style="background: #15224b">
+        <div class="item-content">
+          <div class="name">
+            <h5>Meet Erik</h5>
+            <h6>TurboTax Expert <br />8 years</h6>
+          </div>
+          <div class="play">
+            <svg xmlns="http://www.w3.org/2000/svg" width="33" height="32" viewBox="0 0 33 32" fill="none">
+              <path d="M15.8218 29.0793C23.5038 29.0793 29.7311 22.8519 29.7311 15.17C29.7311 7.48814 23.5038 1.26074 15.8218 1.26074C8.13999 1.26074 1.9126 7.48814 1.9126 15.17C1.9126 22.8519 8.13999 29.0793 15.8218 29.0793Z" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
+              <path
+                d="M12.9715 10.2672C12.861 10.1876 12.7293 10.1426 12.5932 10.1379C12.457 10.1331 12.3226 10.1689 12.2068 10.2407C12.091 10.3124 11.9991 10.4169 11.9428 10.5409C11.8864 10.6649 11.8681 10.8029 11.8902 10.9373V19.4037C11.8684 19.5381 11.8869 19.6759 11.9434 19.7996C11.9999 19.9235 12.0918 20.0277 12.2075 20.0993C12.3232 20.1709 12.4576 20.2066 12.5936 20.2018C12.7295 20.1971 12.8611 20.1521 12.9715 20.0726L21.6945 15.7111C22.2884 15.4136 22.2884 14.9274 21.6945 14.6298L12.9715 10.2672Z"
+                stroke="white"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timothy -->
+      <div class="carousel-item" data-video-url="https://www.youtube.com/embed/NsxkpAgJx0o?si=GkjW297qpmWTuNY-" style="background: #243b83">
+        <div class="item-content">
+          <div class="name">
+            <h5>Meet Timothy</h5>
+            <h6>Independent Pro <br />14 years</h6>
+          </div>
+          <div class="play">
+            <svg xmlns="http://www.w3.org/2000/svg" width="33" height="32" viewBox="0 0 33 32" fill="none">
+              <path d="M15.8218 29.0793C23.5038 29.0793 29.7311 22.8519 29.7311 15.17C29.7311 7.48814 23.5038 1.26074 15.8218 1.26074C8.13999 1.26074 1.9126 7.48814 1.9126 15.17C1.9126 22.8519 8.13999 29.0793 15.8218 29.0793Z" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
+              <path
+                d="M12.9715 10.2672C12.861 10.1876 12.7293 10.1426 12.5932 10.1379C12.457 10.1331 12.3226 10.1689 12.2068 10.2407C12.091 10.3124 11.9991 10.4169 11.9428 10.5409C11.8864 10.6649 11.8681 10.8029 11.8902 10.9373V19.4037C11.8684 19.5381 11.8869 19.6759 11.9434 19.7996C11.9999 19.9235 12.0918 20.0277 12.2075 20.0993C12.3232 20.1709 12.4576 20.2066 12.5936 20.2018C12.7295 20.1971 12.8611 20.1521 12.9715 20.0726L21.6945 15.7111C22.2884 15.4136 22.2884 14.9274 21.6945 14.6298L12.9715 10.2672Z"
+                stroke="white"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chassity -->
+      <div class="carousel-item" data-video-url="https://www.youtube.com/embed/xVK55V52sIA?si=L9uONfoDAlfktA0L" style="background: #3454bb">
+        <div class="item-content">
+          <div class="name">
+            <h5>Meet Chassity</h5>
+            <h6>TurboTax Verified Pro <br />8 years</h6>
+          </div>
+          <div class="play">
+            <svg xmlns="http://www.w3.org/2000/svg" width="33" height="32" viewBox="0 0 33 32" fill="none">
+              <path d="M15.8218 29.0793C23.5038 29.0793 29.7311 22.8519 29.7311 15.17C29.7311 7.48814 23.5038 1.26074 15.8218 1.26074C8.13999 1.26074 1.9126 7.48814 1.9126 15.17C1.9126 22.8519 8.13999 29.0793 15.8218 29.0793Z" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
+              <path
+                d="M12.9715 10.2672C12.861 10.1876 12.7293 10.1426 12.5932 10.1379C12.457 10.1331 12.3226 10.1689 12.2068 10.2407C12.091 10.3124 11.9991 10.4169 11.9428 10.5409C11.8864 10.6649 11.8681 10.8029 11.8902 10.9373V19.4037C11.8684 19.5381 11.8869 19.6759 11.9434 19.7996C11.9999 19.9235 12.0918 20.0277 12.2075 20.0993C12.3232 20.1709 12.4576 20.2066 12.5936 20.2018C12.7295 20.1971 12.8611 20.1521 12.9715 20.0726L21.6945 15.7111C22.2884 15.4136 22.2884 14.9274 21.6945 14.6298L12.9715 10.2672Z"
+                stroke="white"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Christina -->
+      <div class="carousel-item" data-video-url="https://www.youtube.com/embed/rwXqxrJpet4?si=QI1TjwU-V5f1W4A2" style="background: #7187cf">
+        <div class="item-content">
+          <div class="name">
+            <h5>Meet Christina</h5>
+            <h6>Quickbooks Live Expert <br />22 years</h6>
+          </div>
+          <div class="play">
+            <svg xmlns="http://www.w3.org/2000/svg" width="33" height="32" viewBox="0 0 33 32" fill="none">
+              <path d="M15.8218 29.0793C23.5038 29.0793 29.7311 22.8519 29.7311 15.17C29.7311 7.48814 23.5038 1.26074 15.8218 1.26074C8.13999 1.26074 1.9126 7.48814 1.9126 15.17C1.9126 22.8519 8.13999 29.0793 15.8218 29.0793Z" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
+              <path
+                d="M12.9715 10.2672C12.861 10.1876 12.7293 10.1426 12.5932 10.1379C12.457 10.1331 12.3226 10.1689 12.2068 10.2407C12.091 10.3124 11.9991 10.4169 11.9428 10.5409C11.8864 10.6649 11.8681 10.8029 11.8902 10.9373V19.4037C11.8684 19.5381 11.8869 19.6759 11.9434 19.7996C11.9999 19.9235 12.0918 20.0277 12.2075 20.0993C12.3232 20.1709 12.4576 20.2066 12.5936 20.2018C12.7295 20.1971 12.8611 20.1521 12.9715 20.0726L21.6945 15.7111C22.2884 15.4136 22.2884 14.9274 21.6945 14.6298L12.9715 10.2672Z"
+                stroke="white"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lilia -->
+      <div class="carousel-item" data-video-url="https://www.youtube.com/embed/V80rrtigmu0?si=Vj3NXxJvdpLKuONH" style="background: #aebbe4">
+        <div class="item-content">
+          <div class="name">
+            <h5>Meet Lilia</h5>
+            <h6>TurboTax Expert <br />4 years</h6>
+          </div>
+          <div class="play">
+            <svg xmlns="http://www.w3.org/2000/svg" width="33" height="32" viewBox="0 0 33 32" fill="none">
+              <path d="M15.8218 29.0793C23.5038 29.0793 29.7311 22.8519 29.7311 15.17C29.7311 7.48814 23.5038 1.26074 15.8218 1.26074C8.13999 1.26074 1.9126 7.48814 1.9126 15.17C1.9126 22.8519 8.13999 29.0793 15.8218 29.0793Z" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
+              <path
+                d="M12.9715 10.2672C12.861 10.1876 12.7293 10.1426 12.5932 10.1379C12.457 10.1331 12.3226 10.1689 12.2068 10.2407C12.091 10.3124 11.9991 10.4169 11.9428 10.5409C11.8864 10.6649 11.8681 10.8029 11.8902 10.9373V19.4037C11.8684 19.5381 11.8869 19.6759 11.9434 19.7996C11.9999 19.9235 12.0918 20.0277 12.2075 20.0993C12.3232 20.1709 12.4576 20.2066 12.5936 20.2018C12.7295 20.1971 12.8611 20.1521 12.9715 20.0726L21.6945 15.7111C22.2884 15.4136 22.2884 14.9274 21.6945 14.6298L12.9715 10.2672Z"
+                stroke="white"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gordon -->
+      <div class="carousel-item" data-video-url="https://www.youtube.com/embed/z-JHBUPL3fc?si=fmMXzakY5pxnOJsh" style="background: #d6ddf1">
+        <div class="item-content">
+          <div class="name">
+            <h5>Meet Gordon</h5>
+            <h6>Quickbooks Live Expert <br />19 years</h6>
+          </div>
+          <div class="play">
+            <svg xmlns="http://www.w3.org/2000/svg" width="33" height="32" viewBox="0 0 33 32" fill="none">
+              <path d="M15.8218 29.0793C23.5038 29.0793 29.7311 22.8519 29.7311 15.17C29.7311 7.48814 23.5038 1.26074 15.8218 1.26074C8.13999 1.26074 1.9126 7.48814 1.9126 15.17C1.9126 22.8519 8.13999 29.0793 15.8218 29.0793Z" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
+              <path
+                d="M12.9715 10.2672C12.861 10.1876 12.7293 10.1426 12.5932 10.1379C12.457 10.1331 12.3226 10.1689 12.2068 10.2407C12.091 10.3124 11.9991 10.4169 11.9428 10.5409C11.8864 10.6649 11.8681 10.8029 11.8902 10.9373V19.4037C11.8684 19.5381 11.8869 19.6759 11.9434 19.7996C11.9999 19.9235 12.0918 20.0277 12.2075 20.0993C12.3232 20.1709 12.4576 20.2066 12.5936 20.2018C12.7295 20.1971 12.8611 20.1521 12.9715 20.0726L21.6945 15.7111C22.2884 15.4136 22.2884 14.9274 21.6945 14.6298L12.9715 10.2672Z"
+                stroke="white"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div id="videoModal">
+  <div id="videoContainer">
+    <span id="closeModal">×</span>
+    <iframe id="videoIframe" src="" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  </div>
+</div>
+
+<script>
+  let animationId;
+  let initialized = false; // To prevent re-initialization
+  const videoModal = document.getElementById('videoModal');
+  const closeModal = document.getElementById('closeModal');
+  const videoIframe = document.getElementById('videoIframe');
+
+  const initCarousel = () => {
+    const carouselItemsWrapper = document.querySelector('.carousel-items-wrapper');
+    const carouselItemsSlide = document.querySelector('.carousel-items-slide');
+    if (window.innerWidth > 768 && !initialized) {
+      // Initialize carousel logic
+      initialized = true; // Mark as initialized
+
+      const arrowLeft = document.getElementById('arrowLeft');
+      const arrowRight = document.getElementById('arrowRight');
+
+      // Clone the slide for infinite scrolling
+      const clone = carouselItemsSlide.cloneNode(true);
+      carouselItemsWrapper.appendChild(clone);
+
+      let currentPosition = 0;
+      const itemWidth = 216 + 14;
+      const totalWidth = carouselItemsSlide.offsetWidth;
+      let animationPaused = false;
+
+      let speed = 0.9;
+      const normalSpeed = 0.9;
+      const holdSpeed = 3;
+
+      const moveCarousel = () => {
+        if (!animationPaused) {
+          currentPosition -= speed;
+          if (Math.abs(currentPosition) >= totalWidth) currentPosition = 0;
+          carouselItemsWrapper.style.transform = `translateX(${currentPosition}px)`;
+        }
+        animationId = requestAnimationFrame(moveCarousel);
+      };
+
+      const startAnimation = () => {
+        animationPaused = false;
+        cancelAnimationFrame(animationId);
+        moveCarousel();
+      };
+
+      const stopAnimation = () => {
+        animationPaused = true;
+        cancelAnimationFrame(animationId);
+      };
+
+      const speedUp = () => {
+        speed = holdSpeed;
+      };
+      const resetSpeed = () => {
+        speed = normalSpeed;
+      };
+
+      // Arrow Left - Hover
+      arrowLeft.addEventListener('mouseenter', () => {
+        speed = -holdSpeed; // Reverse direction at fast speed
+      });
+      arrowLeft.addEventListener('mouseleave', () => {
+        speed = normalSpeed; // Reset to normal speed
+      });
+
+      // Arrow Right - Hover
+      arrowRight.addEventListener('mouseenter', () => {
+        speed = holdSpeed; // Move forward at fast speed
+      });
+      arrowRight.addEventListener('mouseleave', () => {
+        speed = normalSpeed; // Reset to normal speed
+      });
+
+      // Pause/resume animation
+      carouselItemsWrapper.addEventListener('mouseenter', stopAnimation);
+      carouselItemsWrapper.addEventListener('mouseleave', startAnimation);
+
+      startAnimation();
+      // VIDEO MODAL FUNCTIONALITY FOR DESKTOP
+      attachVideoListeners();
+    } else if (window.innerWidth <= 768 && initialized) {
+      // Clean up carousel logic when resizing to mobile
+      cancelAnimationFrame(animationId); // Stop animation
+      carouselItemsWrapper.style.transform = ''; // Reset transformation
+      initialized = false; // Mark as uninitialized
+      console.log('Carousel logic removed for mobile.');
+    } else if (window.innerWidth <= 768) {
+      // VIDEO MODAL FUNCTIONALITY FOR MOBILE
+      attachVideoListeners();
+    }
+  };
+
+  // Function to attach video listeners to carousel items
+  function attachVideoListeners() {
+    const carouselItems = document.querySelectorAll('.carousel-item');
+
+    // Remove existing listeners first
+    carouselItems.forEach((item) => {
+      item.replaceWith(item.cloneNode(true));
+    });
+
+    // Add click event listeners
+    document.querySelectorAll('.carousel-item').forEach((item) => {
+      item.addEventListener('click', () => {
+        console.log('clicked');
+        const videoUrl = item.getAttribute('data-video-url');
+        if (videoUrl) {
+          videoIframe.src = `${videoUrl}?autoplay=1`;
+          videoModal.style.display = 'flex';
+          pauseAnimationOnModalOpen(); // Pause animation when modal opens
+        }
+      });
+    });
+  }
+
+  // Function to pause animation when modal is open
+  function pauseAnimationOnModalOpen() {
+    setTimeout(() => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    }, 300);
+  }
+
+  // Function to close the modal
+  function closeVideoModal() {
+    videoModal.style.display = 'none';
+    videoIframe.src = ''; // Stop the video
+  }
+
+  // Event listeners for closing modal
+  closeModal.addEventListener('click', closeVideoModal);
+  videoModal.addEventListener('click', (event) => {
+    if (event.target === videoModal) closeVideoModal();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeVideoModal();
+  });
+  // Run on page load
+  initCarousel();
+
+  // Listen for window resize
+  window.addEventListener('resize', initCarousel);
+</script>
